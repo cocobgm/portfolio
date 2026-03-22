@@ -97,10 +97,14 @@
   .video-card:hover .play-overlay { opacity: 1; }
 
   .thumbnail-wrap { position: relative; padding-top: 56.25%; background: var(--surface); border-radius: 10px; overflow: hidden; }
-  .video-iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; pointer-events: none; }
-  .thumb-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0); transition: background .2s; display: flex; align-items: center; justify-content: center; }
-  .play-overlay { opacity: 0; width: 50px; height: 50px; background: rgba(0,0,0,.8); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: opacity .2s; }
-  .play-overlay::after { content: ''; border-left: 16px solid white; border-top: 9px solid transparent; border-bottom: 9px solid transparent; margin-left: 3px; }
+  .video-iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+  .thumb-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0); transition: background .2s; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .thumb-overlay.hidden { display: none; }
+  .video-card:hover .thumb-overlay { background: rgba(0,0,0,.25); }
+  .play-overlay { opacity: 0; width: 60px; height: 60px; background: rgba(0,0,0,.8); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: opacity .2s; }
+  .play-overlay::after { content: ''; border-left: 20px solid white; border-top: 11px solid transparent; border-bottom: 11px solid transparent; margin-left: 4px; }
+  .video-card:hover .play-overlay { opacity: 1; }
+  .video-thumbnail { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
   .duration-badge { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,.85); color: white; font-size: .75rem; font-weight: 500; padding: 2px 5px; border-radius: 4px; }
 
   .video-meta { display: flex; gap: 12px; padding: 10px 2px 4px; }
@@ -152,7 +156,8 @@
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
   /* Reveal */
-  .reveal { opacity: 1; transform: none; }
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s, transform .5s; }
+  .reveal.visible { opacity: 1; transform: none; }
 
   @media (max-width: 860px) {
     .sidebar { display: none; }
@@ -291,8 +296,8 @@
         <!-- 뷰티 롱폼 일본어 -->
         <div class="video-card show reveal" data-cat="longform beauty jp">
           <div class="thumbnail-wrap">
-            <iframe class="video-iframe" src="https://www.youtube.com/embed/esJu-44aMNU?rel=0&modestbranding=1" allowfullscreen></iframe>
-            <div class="thumb-overlay"><div class="play-overlay"></div></div>
+            <img class="video-thumbnail" src="https://img.youtube.com/vi/esJu-44aMNU/maxresdefault.jpg" alt="뷰티 롱폼 일본어">
+            <div class="thumb-overlay" onclick="playVideo(this, 'esJu-44aMNU')"><div class="play-overlay"></div></div>
           </div>
           <div class="video-meta">
             <div class="video-ch-avatar">K</div>
@@ -307,8 +312,8 @@
         <!-- 브이로그 숏폼 한국어 1 -->
         <div class="video-card show reveal" data-cat="shortform vlog kr" style="transition-delay:.05s">
           <div class="thumbnail-wrap">
-            <iframe class="video-iframe" src="https://www.youtube.com/embed/2XjbAYBv2uk?rel=0&modestbranding=1" allowfullscreen></iframe>
-            <div class="thumb-overlay"><div class="play-overlay"></div></div>
+            <img class="video-thumbnail" src="https://img.youtube.com/vi/2XjbAYBv2uk/maxresdefault.jpg" alt="브이로그 숏폼 한국어">
+            <div class="thumb-overlay" onclick="playVideo(this, '2XjbAYBv2uk')"><div class="play-overlay"></div></div>
           </div>
           <div class="video-meta">
             <div class="video-ch-avatar">K</div>
@@ -323,8 +328,8 @@
         <!-- 브이로그 숏폼 한국어 2 -->
         <div class="video-card show reveal" data-cat="shortform vlog kr" style="transition-delay:.1s">
           <div class="thumbnail-wrap">
-            <iframe class="video-iframe" src="https://www.youtube.com/embed/14PUOz9dgTQ?rel=0&modestbranding=1" allowfullscreen></iframe>
-            <div class="thumb-overlay"><div class="play-overlay"></div></div>
+            <img class="video-thumbnail" src="https://img.youtube.com/vi/14PUOz9dgTQ/maxresdefault.jpg" alt="브이로그 숏폼 한국어">
+            <div class="thumb-overlay" onclick="playVideo(this, '14PUOz9dgTQ')"><div class="play-overlay"></div></div>
           </div>
           <div class="video-meta">
             <div class="video-ch-avatar">K</div>
@@ -339,8 +344,8 @@
         <!-- 브이로그 롱폼 한국어 1 -->
         <div class="video-card show reveal" data-cat="longform vlog kr" style="transition-delay:.15s">
           <div class="thumbnail-wrap">
-            <iframe class="video-iframe" src="https://www.youtube.com/embed/IRH__YxzfGQ?rel=0&modestbranding=1" allowfullscreen></iframe>
-            <div class="thumb-overlay"><div class="play-overlay"></div></div>
+            <img class="video-thumbnail" src="https://img.youtube.com/vi/IRH__YxzfGQ/maxresdefault.jpg" alt="브이로그 롱폼 한국어">
+            <div class="thumb-overlay" onclick="playVideo(this, 'IRH__YxzfGQ')"><div class="play-overlay"></div></div>
           </div>
           <div class="video-meta">
             <div class="video-ch-avatar">K</div>
@@ -355,8 +360,8 @@
         <!-- 브이로그 롱폼 한국어 2 -->
         <div class="video-card show reveal" data-cat="longform vlog kr" style="transition-delay:.2s">
           <div class="thumbnail-wrap">
-            <iframe class="video-iframe" src="https://www.youtube.com/embed/fl_AgYaMRVc?rel=0&modestbranding=1" allowfullscreen></iframe>
-            <div class="thumb-overlay"><div class="play-overlay"></div></div>
+            <img class="video-thumbnail" src="https://img.youtube.com/vi/fl_AgYaMRVc/maxresdefault.jpg" alt="브이로그 롱폼 한국어">
+            <div class="thumb-overlay" onclick="playVideo(this, 'fl_AgYaMRVc')"><div class="play-overlay"></div></div>
           </div>
           <div class="video-meta">
             <div class="video-ch-avatar">K</div>
@@ -423,6 +428,19 @@
 </div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  function playVideo(overlay, videoId) {
+    const wrap = overlay.parentElement;
+    overlay.classList.add('hidden');
+    const img = wrap.querySelector('.video-thumbnail');
+    if (img) img.style.display = 'none';
+    const iframe = document.createElement('iframe');
+    iframe.className = 'video-iframe';
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
+    iframe.allow = 'autoplay; encrypted-media';
+    iframe.allowFullscreen = true;
+    wrap.appendChild(iframe);
+  }
+
   function filterChip(btn) {
     document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
     btn.classList.add('active');
