@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>김진우 — Video Editor Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #272727;
+    --border: #303030;
+    --text: #f1f1f1;
+    --text-sub: #aaaaaa;
+    --text-muted: #717171;
+    --red: #ff0000;
+    --chip-bg: #272727;
+    --chip-active: #f1f1f1;
+    --chip-active-text: #0f0f0f;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Roboto','Noto Sans KR',sans-serif; min-height: 100vh; }
+
+  /* HEADER */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg); border-bottom: 1px solid var(--border);
+    height: 56px; display: flex; align-items: center; padding: 0 16px; gap: 16px;
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
+  .hamburger { background: none; border: none; cursor: pointer; padding: 8px; border-radius: 50%; color: var(--text); display: flex; align-items: center; transition: background .2s; }
+  .hamburger:hover { background: var(--surface2); }
+  .logo { display: flex; align-items: center; gap: 6px; text-decoration: none; flex-shrink: 0; }
+  .logo-icon { background: var(--red); border-radius: 4px; width: 32px; height: 22px; display: flex; align-items: center; justify-content: center; }
+  .logo-text { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+  .logo-sub { color: var(--text-sub); font-weight: 400; font-size: 0.65rem; vertical-align: super; margin-left: 1px; }
+
+  .search-bar { flex: 1; max-width: 580px; margin: 0 auto; display: flex; }
+  .search-input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-right: none; border-radius: 40px 0 0 40px; padding: 0 16px; height: 40px; color: var(--text); font-size: .95rem; outline: none; transition: border-color .2s; }
+  .search-input:focus { border-color: #1c62b9; }
+  .search-input::placeholder { color: var(--text-muted); }
+  .search-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 0 40px 40px 0; padding: 0 20px; cursor: pointer; color: var(--text); display: flex; align-items: center; transition: background .2s; }
+  .search-btn:hover { background: #3d3d3d; }
+
+  .header-right { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-shrink: 0; }
+  .icon-btn { background: none; border: none; cursor: pointer; padding: 8px; border-radius: 50%; color: var(--text); display: flex; align-items: center; transition: background .2s; }
+  .icon-btn:hover { background: var(--surface2); }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .85rem; cursor: pointer; }
+
+  /* LAYOUT */
+  .layout { display: flex; }
+
+  /* SIDEBAR */
+  .sidebar { width: 240px; flex-shrink: 0; padding: 12px 0; position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto; scrollbar-width: none; }
+  .sidebar::-webkit-scrollbar { display: none; }
+  .sidebar-section { padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
+  .sidebar-section:last-child { border-bottom: none; }
+  .sidebar-item { display: flex; align-items: center; gap: 24px; padding: 10px 24px; border-radius: 10px; cursor: pointer; transition: background .15s; text-decoration: none; color: var(--text); font-size: .88rem; margin: 0 8px; }
+  .sidebar-item:hover, .sidebar-item.active { background: var(--surface2); font-weight: 500; }
+  .sidebar-label { padding: 16px 24px 8px; font-size: .8rem; font-weight: 600; color: var(--text); }
+
+  /* MAIN */
+  main { flex: 1; min-width: 0; padding: 24px 24px 60px; }
+
+  /* CHIPS */
+  .chips { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; padding-bottom: 16px; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip { flex-shrink: 0; background: var(--chip-bg); border: none; border-radius: 8px; padding: 8px 14px; font-size: .88rem; font-weight: 500; color: var(--text); cursor: pointer; transition: background .15s, color .15s; white-space: nowrap; font-family: inherit; }
+  .chip:hover { background: #3d3d3d; }
+  .chip.active { background: var(--chip-active); color: var(--chip-active-text); }
+
+  /* ABOUT BANNER */
+  .about-banner { background: var(--surface); border-radius: 12px; padding: 24px; display: flex; gap: 24px; align-items: center; margin-bottom: 28px; }
+  .about-avatar { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg,#ff0000,#cc0000); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 700; flex-shrink: 0; }
+  .about-info { flex: 1; }
+  .about-info h1 { font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; }
+  .about-info p { font-size: .88rem; color: var(--text-sub); margin-bottom: 10px; line-height: 1.5; }
+  .about-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 12px; }
+  .about-meta-item { font-size: .8rem; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+  .subscribe-btn { background: var(--text); color: var(--bg); border: none; border-radius: 20px; padding: 10px 20px; font-size: .88rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: background .2s; white-space: nowrap; flex-shrink: 0; }
+  .subscribe-btn:hover { background: #ccc; }
+  .subscribe-btn.saved { background: var(--surface2); color: var(--text); }
+
+  /* SECTION HEADER */
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .section-title { font-size: 1.1rem; font-weight: 600; }
+  .see-all { font-size: .85rem; color: var(--text-sub); text-decoration: none; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+  .see-all:hover { color: var(--text); }
+
+  /* VIDEO GRID */
+  .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 4px 8px; margin-bottom: 40px; }
+  .video-card { border-radius: 12px; overflow: visible; cursor: pointer; display: none; }
+  .video-card.show { display: block; }
+  .video-card:hover .thumb-overlay { background: rgba(0,0,0,.25); }
+  .video-card:hover .video-iframe { pointer-events: auto; }
+  .video-card:hover .play-overlay { opacity: 1; }
+
+  .thumbnail-wrap { position: relative; padding-top: 56.25%; background: var(--surface); border-radius: 10px; overflow: hidden; }
+  .video-iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; pointer-events: none; }
+  .thumb-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0); transition: background .2s; display: flex; align-items: center; justify-content: center; }
+  .play-overlay { opacity: 0; width: 50px; height: 50px; background: rgba(0,0,0,.8); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: opacity .2s; }
+  .play-overlay::after { content: ''; border-left: 16px solid white; border-top: 9px solid transparent; border-bottom: 9px solid transparent; margin-left: 3px; }
+  .duration-badge { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,.85); color: white; font-size: .75rem; font-weight: 500; padding: 2px 5px; border-radius: 4px; }
+
+  .video-meta { display: flex; gap: 12px; padding: 10px 2px 4px; }
+  .video-ch-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--red); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; margin-top: 2px; }
+  .video-details { flex: 1; min-width: 0; }
+  .video-title-text { font-size: .9rem; font-weight: 500; line-height: 1.4; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .video-ch-name { font-size: .8rem; color: var(--text-sub); margin-bottom: 2px; }
+  .video-stats { font-size: .78rem; color: var(--text-muted); }
+  .video-more-btn { background: none; border: none; color: var(--text); cursor: pointer; padding: 6px; border-radius: 50%; display: flex; align-items: center; align-self: flex-start; transition: background .15s; }
+  .video-more-btn:hover { background: var(--surface2); }
+
+  /* SKILLS */
+  .skills-section { margin-bottom: 40px; }
+  .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+  .tool-card { background: var(--surface); border-radius: 12px; padding: 18px 20px; display: flex; align-items: center; gap: 16px; transition: background .15s; }
+  .tool-card:hover { background: var(--surface2); }
+  .tool-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; background: #1e1e1e; }
+  .tool-info { flex: 1; min-width: 0; }
+  .tool-name { font-size: .9rem; font-weight: 500; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tool-bar-track { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .tool-bar-fill { height: 100%; border-radius: 2px; transform: scaleX(0); transform-origin: left; transition: transform 1s cubic-bezier(.16,1,.3,1); }
+  .tool-pct { font-size: .75rem; color: var(--text-muted); white-space: nowrap; }
+
+  /* CONTACT */
+  .contact-section { margin-bottom: 40px; }
+  .contact-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 20px; }
+  .contact-card { background: var(--surface); border-radius: 12px; padding: 20px; display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--text); transition: background .15s; }
+  .contact-card:hover { background: var(--surface2); }
+  .contact-icon-box { width: 44px; height: 44px; border-radius: 50%; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+  .contact-card-type { font-size: .75rem; color: var(--text-muted); margin-bottom: 2px; }
+  .contact-card-value { font-size: .88rem; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .contact-form-wrap { background: var(--surface); border-radius: 12px; padding: 24px; }
+  .form-title { font-size: 1rem; font-weight: 600; margin-bottom: 20px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+  .form-label { font-size: .8rem; color: var(--text-sub); font-weight: 500; }
+  .form-input, .form-textarea { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; color: var(--text); font-size: .9rem; font-family: inherit; outline: none; transition: border-color .2s; resize: none; }
+  .form-input:focus, .form-textarea:focus { border-color: #1c62b9; }
+  .form-input::placeholder, .form-textarea::placeholder { color: var(--text-muted); }
+  .form-submit { background: var(--red); color: white; border: none; border-radius: 20px; padding: 10px 24px; font-size: .9rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: background .2s; }
+  .form-submit:hover { background: #cc0000; }
+
+  /* Note */
+  .sample-note { font-size: .73rem; color: var(--text-muted); margin-top: -28px; margin-bottom: 32px; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* Reveal */
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s, transform .5s; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 860px) {
+    .sidebar { display: none; }
+    main { padding: 16px 12px; }
+    .about-banner { flex-wrap: wrap; }
+    .form-row { grid-template-columns: 1fr; }
+    .search-bar { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <button class="hamburger">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+    </button>
+    <a href="#" class="logo">
+      <div class="logo-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      <span class="logo-text">Edit<span class="logo-sub">folio</span></span>
+    </a>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" class="search-input" placeholder="작업물 검색..." id="searchInput">
+    <button class="search-btn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+    </button>
+  </div>
+
+  <div class="header-right">
+    <button class="icon-btn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+    </button>
+    <div class="avatar">K</div>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-section">
+      <a class="sidebar-item active" href="#">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>홈
+      </a>
+      <a class="sidebar-item" href="#worksSection" onclick="scrollTo('worksSection')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 8L8 16V8l4 3z"/></svg>작업물
+      </a>
+      <a class="sidebar-item" href="#skillsSection" onclick="scrollTo('skillsSection')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/></svg>스킬 &amp; 툴
+      </a>
+      <a class="sidebar-item" href="#contactSection" onclick="scrollTo('contactSection')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>연락처
+      </a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">카테고리</div>
+      <a class="sidebar-item" href="#" onclick="filterChipByName('all')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>전체
+      </a>
+      <a class="sidebar-item" href="#" onclick="filterChipByName('longform')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 8L8 16V8l4 3z"/></svg>롱폼
+      </a>
+      <a class="sidebar-item" href="#" onclick="filterChipByName('shortform')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>숏폼
+      </a>
+      <a class="sidebar-item" href="#" onclick="filterChipByName('vlog')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>브이로그
+      </a>
+      <a class="sidebar-item" href="#" onclick="filterChipByName('beauty')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>뷰티&amp;패션
+      </a>
+      <a class="sidebar-item" href="#" onclick="filterChipByName('info')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>정보성
+      </a>
+      <a class="sidebar-item" href="#" onclick="filterChipByName('jp')">
+        <span style="font-size:1.1rem">🇯🇵</span>일본어
+      </a>
+      <a class="sidebar-item" href="#" onclick="filterChipByName('kr')">
+        <span style="font-size:1.1rem">🇰🇷</span>한국어
+      </a>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main>
+
+    <!-- CHIPS -->
+    <div class="chips" id="chipsRow">
+      <button class="chip active" data-cat="all" onclick="filterChip(this)">전체</button>
+      <button class="chip" data-cat="longform" onclick="filterChip(this)">롱폼</button>
+      <button class="chip" data-cat="shortform" onclick="filterChip(this)">숏폼</button>
+      <button class="chip" data-cat="vlog" onclick="filterChip(this)">브이로그</button>
+      <button class="chip" data-cat="beauty" onclick="filterChip(this)">뷰티&amp;패션</button>
+      <button class="chip" data-cat="info" onclick="filterChip(this)">정보성</button>
+      <button class="chip" data-cat="jp" onclick="filterChip(this)">🇯🇵 일본어</button>
+      <button class="chip" data-cat="kr" onclick="filterChip(this)">🇰🇷 한국어</button>
+    </div>
+
+    <!-- ABOUT BANNER -->
+    <div class="about-banner reveal">
+      <div class="about-avatar">K</div>
+      <div class="about-info">
+        <h1>김진우 (Kim Jisoo)</h1>
+        <div class="about-meta">
+          <span class="about-meta-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            서울, 대한민국
+          </span>
+          <span class="about-meta-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+            영상 편집자 · 8년 경력
+          </span>
+          <span class="about-meta-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+            작업물 150개+
+          </span>
+        </div>
+        <p>광고 CF, 뮤직비디오, 다큐멘터리, 단편영화 전문. Premiere Pro · DaVinci Resolve · After Effects 사용.</p>
+      </div>
+      <button class="subscribe-btn" id="subscribeBtn" onclick="toggleSave()">문의하기</button>
+    </div>
+
+    <!-- WORKS -->
+    <div id="worksSection">
+      <div class="section-header reveal">
+        <span class="section-title">🎬 작업물</span>
+        <a class="see-all">전체 보기 ›</a>
+      </div>
+
+      <div class="video-grid" id="videoGrid">
+
+        <!-- 뷰티 롱폼 일본어 -->
+        <div class="video-card show reveal" data-cat="longform beauty jp">
+          <div class="thumbnail-wrap">
+            <iframe class="video-iframe" src="https://www.youtube.com/embed/esJu-44aMNU?rel=0&modestbranding=1" allowfullscreen></iframe>
+            <div class="thumb-overlay"><div class="play-overlay"></div></div>
+          </div>
+          <div class="video-meta">
+            <div class="video-ch-avatar">K</div>
+            <div class="video-details">
+              <div class="video-title-text">뷰티 롱폼 · 일본어</div>
+              <div class="video-ch-name">김진우 편집실</div>
+            </div>
+            <button class="video-more-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
+          </div>
+        </div>
+
+        <!-- 브이로그 숏폼 한국어 1 -->
+        <div class="video-card show reveal" data-cat="shortform vlog kr" style="transition-delay:.05s">
+          <div class="thumbnail-wrap">
+            <iframe class="video-iframe" src="https://www.youtube.com/embed/2XjbAYBv2uk?rel=0&modestbranding=1" allowfullscreen></iframe>
+            <div class="thumb-overlay"><div class="play-overlay"></div></div>
+          </div>
+          <div class="video-meta">
+            <div class="video-ch-avatar">K</div>
+            <div class="video-details">
+              <div class="video-title-text">브이로그 숏폼 · 한국어</div>
+              <div class="video-ch-name">김진우 편집실</div>
+            </div>
+            <button class="video-more-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
+          </div>
+        </div>
+
+        <!-- 브이로그 숏폼 한국어 2 -->
+        <div class="video-card show reveal" data-cat="shortform vlog kr" style="transition-delay:.1s">
+          <div class="thumbnail-wrap">
+            <iframe class="video-iframe" src="https://www.youtube.com/embed/14PUOz9dgTQ?rel=0&modestbranding=1" allowfullscreen></iframe>
+            <div class="thumb-overlay"><div class="play-overlay"></div></div>
+          </div>
+          <div class="video-meta">
+            <div class="video-ch-avatar">K</div>
+            <div class="video-details">
+              <div class="video-title-text">브이로그 숏폼 · 한국어</div>
+              <div class="video-ch-name">김진우 편집실</div>
+            </div>
+            <button class="video-more-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
+          </div>
+        </div>
+
+        <!-- 브이로그 롱폼 한국어 1 -->
+        <div class="video-card show reveal" data-cat="longform vlog kr" style="transition-delay:.15s">
+          <div class="thumbnail-wrap">
+            <iframe class="video-iframe" src="https://www.youtube.com/embed/IRH__YxzfGQ?rel=0&modestbranding=1" allowfullscreen></iframe>
+            <div class="thumb-overlay"><div class="play-overlay"></div></div>
+          </div>
+          <div class="video-meta">
+            <div class="video-ch-avatar">K</div>
+            <div class="video-details">
+              <div class="video-title-text">브이로그 롱폼 · 한국어</div>
+              <div class="video-ch-name">김진우 편집실</div>
+            </div>
+            <button class="video-more-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
+          </div>
+        </div>
+
+        <!-- 브이로그 롱폼 한국어 2 -->
+        <div class="video-card show reveal" data-cat="longform vlog kr" style="transition-delay:.2s">
+          <div class="thumbnail-wrap">
+            <iframe class="video-iframe" src="https://www.youtube.com/embed/fl_AgYaMRVc?rel=0&modestbranding=1" allowfullscreen></iframe>
+            <div class="thumb-overlay"><div class="play-overlay"></div></div>
+          </div>
+          <div class="video-meta">
+            <div class="video-ch-avatar">K</div>
+            <div class="video-details">
+              <div class="video-title-text">브이로그 롱폼 · 한국어</div>
+              <div class="video-ch-name">김진우 편집실</div>
+            </div>
+            <button class="video-more-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SKILLS -->
+    <div class="skills-section reveal" id="skillsSection">
+      <div class="section-header">
+        <span class="section-title">🛠 스킬 &amp; 사용 툴</span>
+      </div>
+      <div class="tools-grid">
+        <div class="tool-card"><div class="tool-icon">🎬</div><div class="tool-info"><div class="tool-name">Premiere Pro</div><div class="tool-bar-track"><div class="tool-bar-fill" data-w=".98" style="background:#9b59b6"></div></div></div><span class="tool-pct">98%</span></div>
+        <div class="tool-card"><div class="tool-icon">✨</div><div class="tool-info"><div class="tool-name">After Effects</div><div class="tool-bar-track"><div class="tool-bar-fill" data-w=".92" style="background:#3498db"></div></div></div><span class="tool-pct">92%</span></div>
+        <div class="tool-card"><div class="tool-icon">🎨</div><div class="tool-info"><div class="tool-name">DaVinci Resolve</div><div class="tool-bar-track"><div class="tool-bar-fill" data-w=".88" style="background:#e74c3c"></div></div></div><span class="tool-pct">88%</span></div>
+        <div class="tool-card"><div class="tool-icon">🍎</div><div class="tool-info"><div class="tool-name">Final Cut Pro</div><div class="tool-bar-track"><div class="tool-bar-fill" data-w=".85" style="background:#1abc9c"></div></div></div><span class="tool-pct">85%</span></div>
+        <div class="tool-card"><div class="tool-icon">🎵</div><div class="tool-info"><div class="tool-name">Adobe Audition</div><div class="tool-bar-track"><div class="tool-bar-fill" data-w=".80" style="background:#2ecc71"></div></div></div><span class="tool-pct">80%</span></div>
+        <div class="tool-card"><div class="tool-icon">🔷</div><div class="tool-info"><div class="tool-name">Cinema 4D</div><div class="tool-bar-track"><div class="tool-bar-fill" data-w=".72" style="background:#f39c12"></div></div></div><span class="tool-pct">72%</span></div>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="contact-section reveal" id="contactSection">
+      <div class="section-header">
+        <span class="section-title">✉️ 연락처</span>
+      </div>
+      <div class="contact-cards">
+        <a href="/cdn-cgi/l/email-protection#89f0e6fcfbc9ece4e8e0e5a7eae6e4" class="contact-card">
+          <div class="contact-icon-box">📧</div>
+          <div><div class="contact-card-type">이메일</div><div class="contact-card-value"><span class="__cf_email__" data-cfemail="50293f252210353d31393c7e333f3d">[email&#160;protected]</span></div></div>
+        </a>
+        <a href="https://instagram.com" target="_blank" class="contact-card">
+          <div class="contact-icon-box">📸</div>
+          <div><div class="contact-card-type">인스타그램</div><div class="contact-card-value">@yourhandle</div></div>
+        </a>
+        <a href="https://vimeo.com" target="_blank" class="contact-card">
+          <div class="contact-icon-box">🎥</div>
+          <div><div class="contact-card-type">Vimeo</div><div class="contact-card-value">vimeo.com/yourname</div></div>
+        </a>
+      </div>
+      <div class="contact-form-wrap">
+        <div class="form-title">프로젝트 문의하기</div>
+        <form onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-group" style="margin:0"><label class="form-label">이름</label><input type="text" class="form-input" placeholder="홍길동" required></div>
+            <div class="form-group" style="margin:0"><label class="form-label">이메일</label><input type="email" class="form-input" placeholder="your@email.com" required></div>
+          </div>
+          <div class="form-group" style="margin-top:12px"><label class="form-label">프로젝트 유형</label><input type="text" class="form-input" placeholder="광고 CF, 뮤직비디오, 다큐..."></div>
+          <div class="form-group"><label class="form-label">메시지</label><textarea class="form-textarea" rows="4" placeholder="프로젝트에 대해 자세히 알려주세요..." required></textarea></div>
+          <button type="submit" class="form-submit" id="submitBtn">메시지 보내기</button>
+        </form>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  function filterChip(btn) {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    const cat = btn.dataset.cat;
+    document.querySelectorAll('.video-card').forEach(card => {
+      const cats = card.dataset.cat.split(' ');
+      card.classList.toggle('show', cat === 'all' || cats.includes(cat));
+    });
+  }
+
+  function filterChipByName(cat) {
+    const chip = document.querySelector(`.chip[data-cat="${cat}"]`);
+    if (chip) filterChip(chip);
+    document.getElementById('worksSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function scrollTo(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  document.getElementById('searchInput').addEventListener('input', function () {
+    const q = this.value.toLowerCase();
+    document.querySelectorAll('.video-card').forEach(card => {
+      const title = card.querySelector('.video-title-text').textContent.toLowerCase();
+      card.classList.toggle('show', !q || title.includes(q));
+    });
+  });
+
+  function toggleSave() {
+    const btn = document.getElementById('subscribeBtn');
+    btn.classList.toggle('saved');
+    btn.textContent = btn.classList.contains('saved') ? '✓ 저장됨' : '문의하기';
+    if (btn.classList.contains('saved')) {
+      document.getElementById('contactSection').scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = '✓ 전송 완료!';
+    btn.style.background = '#2e7d32';
+    setTimeout(() => { btn.textContent = '메시지 보내기'; btn.style.background = ''; e.target.reset(); }, 3000);
+  }
+
+  // Scroll reveal
+  const obs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Skill bars
+  const barObs = new IntersectionObserver(es => {
+    es.forEach(e => {
+      if (e.isIntersecting) {
+        e.ta
